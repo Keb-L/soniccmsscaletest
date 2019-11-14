@@ -3,7 +3,7 @@
 import soniccmsscaletest
 import os.path as osp
 from time import sleep
-import logging, datetime, os
+import logging, datetime, os, glob
 logger = logging.getLogger('soniccmsscaletest')
 
 class Inferencer(object):
@@ -13,7 +13,6 @@ class Inferencer(object):
     :param variable: Description of some variable
     :type variable: str, optional
     """
-
     date_fmt_str = '%Y-%m-%d %H:%M:%S'
 
     @classmethod
@@ -34,7 +33,6 @@ class Inferencer(object):
         self.arch = 'slc6_amd64_gcc700'
         self.dry = dry
         soniccmsscaletest.utils.check_is_cmssw_path(self.cmssw_path)
-
 
     def run_at_time(self, time, late_tolerance_min=5, n_events=None):
         """
@@ -91,6 +89,18 @@ class Inferencer(object):
         soniccmsscaletest.utils.run_multiple_commands(cmds)
 
 
-
+    def concatenate_output(self, outfile=None):
+        if outfile is None: outfile = 'concat_outputs.txt'
+        outputs = glob.glob(osp.join(self.cmssw_path, 'src/SonicCMS/AnalysisFW/python', 'output*.txt'))
+        concatenated = ''
+        for output in outputs:
+            concatenated += '<output>\n'
+            concatenated += 'file: {0}\n'.format(osp.basename(output))
+            with open(output, 'r') as f:
+                concatenated += f.read()
+            concatenated += '</output>\n'
+        logger.warning('Writing concatenated outputs to {0}'.format(outfile))
+        with open(outfile, 'w') as f:
+            f.write(concatenated)
 
 

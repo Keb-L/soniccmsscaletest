@@ -19,7 +19,7 @@ class File(object):
     def _write_nochecks(self, filename):
         with open(filename, 'w') as f:
             logger.info('Writing contents to {0}'.format(filename))
-            f.write('\n'.join(self.parse()))
+            f.write(self.parse())
         
     def write(self, filename, must_not_exist=False, dry=False):
         if osp.isfile(filename):
@@ -92,6 +92,7 @@ class JDLFile(JDLBase):
         if self.soniccmsscaletest_tarball:
             logger.info('Added {0} to input files'.format(self.soniccmsscaletest_tarball))
             self.options['transfer_input_files'].append(self.soniccmsscaletest_tarball)
+        self.options['transfer_input_files'] = ','.join(self.options['transfer_input_files'])
         self.options['output'] = 'sonic_$(Cluster)_$(Process).stdout'
         self.options['error']  = 'sonic_$(Cluster)_$(Process).stderr'
         self.options['log']    = 'sonic_$(Cluster)_$(Process).log'
@@ -154,7 +155,8 @@ class SHFile(File):
         sh.extend(self.get_soniccmsscaletest_pkg())
         cmd = (
             'soniccmsscaletest_runtarball {tarball} '
-            '{runtime_opt} -a {address} -p {port} -n {nevents} -d {datafile}'
+            '{runtime_opt} -a {address} -p {port} -n {nevents} -d {datafile} '
+            '--output "output/concat_output_${{Process}}.txt"'
             .format(
                 tarball = self.cmssw_tarball,
                 runtime_opt = '--runtime "{0}"'.format(self.runtime) if self.runtime else '',

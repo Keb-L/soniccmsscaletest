@@ -10,6 +10,7 @@ parser.add_argument('-p', '--port', type=int, help='Port of the Azure service')
 parser.add_argument('-n', '--nevents', type=int, help='Number of events to inference')
 parser.add_argument('-d', '--datafile', type=str, help='.root file containing events')
 parser.add_argument('-o', '--outdir', type=str, default='.', help='Where to extract the tarball and run')
+parser.add_argument('--output', type=str, default='concat_output.txt', help='Concatenated output file with all the inference times')
 parser.add_argument('--dry', action='store_true', help='Shows logging output but does not run anything')
 args = parser.parse_args()
 
@@ -22,6 +23,8 @@ def main():
         inferencer.run_at_time(args.runtime, args.nevents)
     else:
         inferencer.run(args.nevents)
+
+    inferencer.concatenate_output(args.output)
 
 
 if __name__ == '__main__':

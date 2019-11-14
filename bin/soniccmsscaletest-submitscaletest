@@ -55,6 +55,9 @@ def main():
             )
         jdl.write('scaletest.jdl')
 
+        cmd = ['condor_submit', 'scaletest.jdl']
+        soniccmsscaletest.utils.run_command(cmd, dry=args.dry, shell=True)
+
 
 if __name__ == '__main__':
     main()

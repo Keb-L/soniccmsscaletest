@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import soniccmsscaletest
+import os.path as osp
+import argparse, datetime, logging
+logger = logging.getLogger('soniccmsscaletest')
+date_fmt_str = '%Y-%m-%d %H:%M:%S'
+
+parser = argparse.ArgumentParser()
+parser.add_argument('tarball', type=str, help='Path to CMSSW tarball')
+parser.add_argument('--rundelay', type=int, help='Amount of minutes from NOW until the job should really start')
+parser.add_argument('-a', '--address', required=True, type=str, help='Address of the Azure service')
+parser.add_argument('-p', '--port', default=50051, type=int, help='Port of the Azure service')
+parser.add_argument('-n', '--nevents', required=True, type=int, help='Number of events to inference')
+parser.add_argument('--njobs', type=int, required=True, help='Number of jobs to submit')
+parser.add_argument('-d', '--datafile', required=True, type=str, help='.root file containing events')
+parser.add_argument('--dry', action='store_true', help='Shows logging output but does not run anything')
+args = parser.parse_args()
+
+def main():
+    now = datetime.datetime.now()
+    rundir = 'scaletest_{0}'.format(now.strftime('%Y%m%d_%H%M%S'))
+    soniccmsscaletest.utils.create_directory(rundir, must_not_exist=True, dry=args.dry)
+    cmssw_tarball = osp.abspath(args.tarball)
+
+    with soniccmsscaletest.utils.switchdir(rundir, dry=args.dry):
+        runtime = now + datetime.timedelta(minutes=args.rundelay)
+        runtime_str = runtime.strftime(date_fmt_str)
+
+        logger.info(
+            'Scheduling scaletest at {0} ({1} minutes from now)'
+            .format(runtime_str, args.rundelay)
+            )
+
+        if not args.dry: soniccmsscaletest.utils.tarball_head()
+
+        sh = soniccmsscaletest.SHFile(
+            cmssw_tarball = cmssw_tarball,
+            address = args.address,
+            port = args.port,
+            nevents = args.nevents,
+            datafile = args.datafile,
+            runtime = runtime_str,
+            soniccmsscaletest_tarball = 'soniccmsscaletest.tar'
+            )
+        sh.write('scaletest.sh')
+
+        jdl = soniccmsscaletest.JDLFile(
+            sh_file = 'scaletest.sh',
+            cmssw_tarball = cmssw_tarball,
+            datafile = args.datafile,
+            n_jobs = args.njobs,
+            runtime = runtime_str,
+            soniccmsscaletest_tarball = 'soniccmsscaletest.tar'
+            )
+        jdl.write('scaletest.jdl')
+
+
+if __name__ == '__main__':
+    main()

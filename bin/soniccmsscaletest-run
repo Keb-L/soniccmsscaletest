@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import soniccmsscaletest
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('cmssw_path', type=str, help='Path to CMSSW')
+parser.add_argument('--runtime', type=str, help='Time at which the run is supposed to start, format %Y-%m-%d %H:%M:%S')
+parser.add_argument('-a', '--address', type=str, help='Address of the Azure service')
+parser.add_argument('-p', '--port', type=int, help='Port of the Azure service')
+parser.add_argument('-n', '--nevents', type=int, help='Number of events to inference')
+parser.add_argument('-d', '--datafile', type=str, help='.root file containing events')
+parser.add_argument('-o', '--outdir', type=str, default='.', help='Where to extract the tarball and run')
+parser.add_argument('--dry', action='store_true', help='Shows logging output but does not run anything')
+args = parser.parse_args()
+
+def main():
+    inferencer = soniccmsscaletest.Inferencer(
+        args.address, args.port, args.nevents, args.datafile, args.cmssw_path, dry=args.dry
+        )
+
+    if args.runtime:
+        inferencer.run_at_time(args.runtime, args.nevents)
+    else:
+        inferencer.run(args.nevents)
+
+
+if __name__ == '__main__':
+    main()

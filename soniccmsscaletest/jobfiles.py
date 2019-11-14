@@ -154,7 +154,7 @@ class SHFile(File):
             ]
         sh.extend(self.get_soniccmsscaletest_pkg())
         cmd = (
-            'soniccmsscaletest_runtarball {tarball} '
+            'soniccmsscaletest-runtarball {tarball} '
             '{runtime_opt} -a {address} -p {port} -n {nevents} -d {datafile} '
             '--output "output/concat_output_${{Process}}.txt"'
             .format(

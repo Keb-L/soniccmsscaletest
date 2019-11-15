@@ -63,5 +63,4 @@ class TarballManager(object):
         soniccmsscaletest.utils.run_command(cmd, dry=dry)
         # return the CMSSW directory
         if dry: return 'CMSSW_dry'
-        return [ d for d in glob.glob(osp.join(outdir, 'CMSSW*')) if not d.endswith('.gz.')][0]
-
+        return [ d for d in glob.glob(osp.join(outdir, 'CMSSW*')) if not d.endswith('.gz')][0]

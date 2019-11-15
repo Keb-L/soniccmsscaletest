@@ -28,7 +28,7 @@ class Inferencer(object):
         self.address = address
         self.port = port
         self.n_events = n_events
-        self.datafile = datafile
+        self.datafile = osp.abspath(datafile)
         self.cmssw_path = osp.abspath(cmssw_path)
         self.arch = 'slc6_amd64_gcc700'
         self.dry = dry

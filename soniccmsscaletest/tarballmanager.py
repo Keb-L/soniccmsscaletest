@@ -46,6 +46,8 @@ class TarballManager(object):
                 # outdir,
                 # '--exclude=src',  # Probably do need src... and it's anyway tiny
                 '--exclude=tmp',
+                '--exclude=work/grpc',
+                '--exclude=work/inception_cmake'
                 ]
             soniccmsscaletest.utils.run_command(cmd, dry=dry)
 

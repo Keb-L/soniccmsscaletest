@@ -81,6 +81,7 @@ class Inferencer(object):
             'export SCRAM_ARCH={0}'.format(self.arch),
             'cd {0}/src'.format(self.cmssw_path),
             'scram b ProjectRename',
+            'scram b ExternalLinks',
             'cmsenv',
             'cd SonicCMS/AnalysisFW/python',
             [

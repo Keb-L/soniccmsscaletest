@@ -141,9 +141,22 @@ def run_multiple_commands(cmds, env=None, dry=False):
         raise subprocess.CalledProcessError(cmd, returncode)
 
 def check_is_cmssw_path(path):
-    assert osp.basename(path).startswith('CMSSW')
-    assert osp.isdir(osp.join(path, 'src'))
-
+    abs_path = osp.abspath(path)
+    if not osp.basename(path).startswith('CMSSW'):
+        raise ValueError(
+            'Expected {0} to start with "CMSSW" (path: {1})'
+            .format(osp.basename(path), abs_path)
+            )
+    if not osp.isdir(path):
+        raise OSError(
+            '{0} is not a directory (path: {1})'
+            .format(path, abs_path)
+            )
+    if not osp.isdir(osp.join(path, 'src')):
+        raise OSError(
+            '{0} is not a directory (path: {1})'
+            .format(osp.join(path, 'src'), abs_path)
+            )
 
 def tarball_head(outfile=None):
     """

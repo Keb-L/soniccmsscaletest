@@ -34,7 +34,7 @@ class Inferencer(object):
         self.dry = dry
         soniccmsscaletest.utils.check_is_cmssw_path(self.cmssw_path)
 
-    def run_at_time(self, time, late_tolerance_min=5, n_events=None):
+    def run_at_time(self, time, late_tolerance_min=5, n_events=None, apply_lpcwn_offset=True):
         """
         :param time: Date string with format self.date_fmt_str. time should be in the 
         future; it is allowed to be late by late_tolerance_min minutes
@@ -42,8 +42,16 @@ class Inferencer(object):
         :param late_tolerance_min: Amount of minutes the job can be late and still start
         :type late_tolerance_min: str
         """
+
+        def get_now():
+            now = datetime.datetime.now()
+            if apply_lpcwn_offset:
+                logger.warning('Applying WN offset of 6 hours!')
+                now -= datetime.timedelta(hours=6)
+            return now
+
         run_time = datetime.datetime.strptime(time, self.date_fmt_str)
-        now = datetime.datetime.now()
+        now = get_now()
         delta = run_time - now
         negative_delta = now - run_time
         delta_tolerance = datetime.timedelta(minutes=late_tolerance_min)
@@ -62,7 +70,7 @@ class Inferencer(object):
             logger.warning('Job is early by {0} minutes; sleeping {1} seconds'.format(delta.seconds/60., delta.seconds))
             sleep(delta.seconds)
 
-        logger.info('Starting run at {0}'.format(datetime.datetime.now().strftime(self.date_fmt_str)))
+        logger.info('Starting run at {0}'.format(get_now().strftime(self.date_fmt_str)))
         self.run(n_events)
 
     def run(self, n_events=None):

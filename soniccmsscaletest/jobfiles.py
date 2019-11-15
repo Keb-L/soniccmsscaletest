@@ -156,7 +156,7 @@ class SHFile(File):
         cmd = (
             'soniccmsscaletest-runtarball {tarball} '
             '{runtime_opt} -a {address} -p {port} -n {nevents} -d {datafile} '
-            '--output "output/concat_output_${{Process}}.txt"'
+            '--output "output/concat_output_${{CONDOR_PROCESS_ID}}.txt"'
             .format(
                 tarball = self.cmssw_tarball,
                 runtime_opt = '--runtime "{0}"'.format(self.runtime) if self.runtime else '',

@@ -9,8 +9,10 @@ subprocess_logger = setup_logger(
     )
 
 SCRAM_ARCH='slc6_amd64_gcc700'
+DATE_FMT_STR='%Y-%m-%d %H:%M:%S'
 
 from . import utils
 from .inferencer import Inferencer
 from .tarballmanager import TarballManager
 from .jobfiles import JDLFile, SHFile
+from .outputinterpreter import OutputInterpreter

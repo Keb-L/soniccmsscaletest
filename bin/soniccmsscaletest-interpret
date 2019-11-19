@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+import soniccmsscaletest
+import argparse, datetime
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    '-i', '--infiles', metavar='file', type=str, nargs='+',
+    default = None,
+    help = 'List of filenames outputted by the scaletest to be interpreted'
+    )
+args = parser.parse_args()
+
+
+def main():
+    outputinterpreter = soniccmsscaletest.OutputInterpreter()
+    combined, output_per_job = outputinterpreter.interpret(args.infiles)
+
+    # infs = combined.sort_inferences_by_end_time()
+    # for inf in infs[:5] + infs[-5:]:
+    #     print(inf)
+
+    binning = combined.bin_inferences(bin_width=datetime.timedelta(minutes=1))
+
+    for b in binning:
+        print(b)
+
+
+if __name__ == '__main__':
+    main()

@@ -17,6 +17,7 @@ setup(
         'bin/soniccmsscaletest-run',
         'bin/soniccmsscaletest-maketarball',
         'bin/soniccmsscaletest-runtarball',
-        'bin/soniccmsscaletest-submitscaletest'
+        'bin/soniccmsscaletest-submitscaletest',
+        'bin/soniccmsscaletest-interpret',
         ],
     )

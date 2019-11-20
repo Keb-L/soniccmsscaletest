@@ -117,11 +117,13 @@ class Output(object):
         binning = [ Bin(start_time+i*bin_width, start_time+(i+1)*bin_width) for i in range(n_bins) ]
         # Function to conveniently find the right bin for a given inference
         def find_bin(inference):
-            for b in binning:
-                if inference.end_time < b.right and inference.start_time >= b.left:
+            for i, b in enumerate(binning):
+                # if inference.end_time < b.right and inference.start_time >= b.left:
+                #     return b
+                if b.right > inference.end_time:
                     return b
             else:
-                logger.warning('No bin found for:\n{0}'.format(inference))
+                logger.error('No bin found for:\n{0}'.format(inference))
         for inf in self.inferences_by_start_time:
             find_bin(inf).inferences.append(inf)
         return binning

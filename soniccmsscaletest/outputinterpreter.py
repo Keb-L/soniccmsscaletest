@@ -7,15 +7,6 @@ from time import sleep
 import logging, datetime, os, glob, re, pprint, math
 logger = logging.getLogger('soniccmsscaletest')
 
-# <output>
-# file: output_3252.txt
-# starttime: Mon Nov 18 17:28:31 2019
-# remoteduration: 230604 microseconds
-# Convert succeeded.
-# scores: [0.00222227 0.99777776]
-# string: classifier/model_1/classifier_output/Softmax:0
-# </output>
-# <output>
 
 date_fmt_str_in_output = '%a %b %d %H:%M:%S %Y'
 short_date_fmt_str = '%H:%M:%S:%f'
@@ -128,6 +119,11 @@ class Output(object):
             find_bin(inf).inferences.append(inf)
         return binning
 
+    def average_inference_time(self):
+        import numpy as np
+        durations = [i.remote_duration for i in self.inferences]
+        return np.mean(durations), np.std(durations)
+
 
 class Bin(Output):
     """
@@ -141,12 +137,14 @@ class Bin(Output):
         self.right = right
 
     def __repr__(self):
+        mean, std = self.average_inference_time()
         return (
-            '[ {0} to {1} ): {2} inferences'
+            '[ {0} to {1} ): {2:>5d} inferences; avg inf time: {3:7.2f} +- {4:7.2f} ms'
             .format(
                 self.left.strftime(short_date_fmt_str),
                 self.right.strftime(short_date_fmt_str),
-                len(self.inferences)
+                len(self.inferences),
+                mean/1000., std/1000.
                 )
             )
 

@@ -94,7 +94,7 @@ class JDLFile(JDLBase):
             self.options['transfer_input_files'].append(self.soniccmsscaletest_tarball)
         self.options['transfer_input_files'] = ','.join(self.options['transfer_input_files'])
         self.options['notification'] = 'Complete'
-        self.options['notify_user'] = 'tklijnsm@gmail.com'
+        self.options['notify_user'] = 'jeffkrupa@gmail.com'
         self.options['output'] = 'sonic_$(Cluster)_$(Process).stdout'
         self.options['error']  = 'sonic_$(Cluster)_$(Process).stderr'
         self.options['log']    = 'sonic_$(Cluster)_$(Process).log'

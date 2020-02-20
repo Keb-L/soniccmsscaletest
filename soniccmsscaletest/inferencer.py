@@ -76,7 +76,7 @@ class Inferencer(object):
     def run(self, n_events=None):
         n_events = self.n_events if n_events is None else n_events
         cmds = [
-            'shopt -s expand_aliases',
+            'shopt -s expand_aliases','uname -r',
             'source /cvmfs/cms.cern.ch/cmsset_default.sh',
             'export SCRAM_ARCH={0}'.format(self.arch),
             'cd {0}/src'.format(self.cmssw_path),

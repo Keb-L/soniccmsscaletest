@@ -98,6 +98,7 @@ class JDLFile(JDLBase):
         self.options['output'] = 'sonic_$(Cluster)_$(Process).stdout'
         self.options['error']  = 'sonic_$(Cluster)_$(Process).stderr'
         self.options['log']    = 'sonic_$(Cluster)_$(Process).log'
+        self.options['requirements']    = '"machine == t3desk014.mit.edu"'
         # Make sure of time at which to run
         if self.runtime:
             datetime.datetime.strptime(self.runtime, '%Y-%m-%d %H:%M:%S')  # Make sure str has right format

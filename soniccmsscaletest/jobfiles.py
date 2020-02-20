@@ -98,7 +98,7 @@ class JDLFile(JDLBase):
         self.options['output'] = 'sonic_$(Cluster)_$(Process).stdout'
         self.options['error']  = 'sonic_$(Cluster)_$(Process).stderr'
         self.options['log']    = 'sonic_$(Cluster)_$(Process).log'
-        self.options['required_os'] = "rhel7"# '(Machine == "t3desk014.mit.edu")'
+        self.options['required_os'] = '"rhel7"'# '(Machine == "t3desk014.mit.edu")'
         self.options['requirements'] = '(Machine == "t3desk014.mit.edu")'
         # Make sure of time at which to run
         if self.runtime:

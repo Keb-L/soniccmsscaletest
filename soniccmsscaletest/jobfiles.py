@@ -55,7 +55,7 @@ class JDLBase(File):
     def parse(self):
         self.subparse()
         jdl = []
-        for key, value in self.options.iteritems():
+        for key, value in self.options.items():
             if key == 'environment':
                 jdl.append('environment = "{0}"'.format(self.parse_environment()))
             else:
@@ -66,7 +66,7 @@ class JDLBase(File):
         return jdl
 
     def parse_environment(self):
-        return ' '.join([ '{0}=\'{1}\''.format(key, value) for key, value in self.environment.iteritems() ])
+        return ' '.join([ '{0}=\'{1}\''.format(key, value) for key, value in self.environment.items() ])
 
 
 class JDLFile(JDLBase):

@@ -30,7 +30,7 @@ class Inferencer(object):
         self.n_events = n_events
         self.datafile = osp.abspath(datafile)
         self.cmssw_path = osp.abspath(cmssw_path)
-        self.arch = 'slc6_amd64_gcc700'
+        self.arch = 'slc7_amd64_gcc700'
         self.dry = dry
         soniccmsscaletest.utils.check_is_cmssw_path(self.cmssw_path)
 
@@ -83,9 +83,9 @@ class Inferencer(object):
             'scram b ProjectRename',
             'scram b ExternalLinks',
             'cmsenv',
-            'cd SonicCMS/AnalysisFW/python',
+            'cd SonicCMS/TensorRT/python',
             [
-                'cmsRun jetImageTest_mc_cfg.py',
+                'cmsRun HLT_OnLine_GRun.py',
                 'maxEvents={0}'.format(n_events),
                 'address={0}'.format(self.address),
                 'port={0}'.format(self.port),
@@ -100,7 +100,7 @@ class Inferencer(object):
 
     def concatenate_output(self, outfile=None):
         if outfile is None: outfile = 'concat_outputs.txt'
-        outputs = glob.glob(osp.join(self.cmssw_path, 'src/SonicCMS/AnalysisFW/python', 'output*.txt'))
+        outputs = glob.glob(osp.join(self.cmssw_path, 'src/SonicCMS/TensorRT/python', 'output*.txt'))
         concatenated = ''
         for output in outputs:
             concatenated += '<output>\n'

@@ -34,7 +34,7 @@ class Inferencer(object):
         self.dry = dry
         soniccmsscaletest.utils.check_is_cmssw_path(self.cmssw_path)
 
-    def run_at_time(self, time, late_tolerance_min=5, n_events=None, apply_lpcwn_offset=True):
+    def run_at_time(self, time, late_tolerance_min=5, n_events=None, apply_lpcwn_offset=False):
         """
         :param time: Date string with format self.date_fmt_str. time should be in the 
         future; it is allowed to be late by late_tolerance_min minutes
@@ -45,10 +45,10 @@ class Inferencer(object):
 
         def get_now():
             now = datetime.datetime.now()
-            if apply_lpcwn_offset:
-                logger.warning('Applying WN offset of 6 hours!')
-                now -= datetime.timedelta(hours=6)
-            return now
+            #if apply_lpcwn_offset:
+            #    logger.warning('Applying WN offset of 6 hours!')
+            #    now -= datetime.timedelta(hours=6)
+            #return now
 
         run_time = datetime.datetime.strptime(time, self.date_fmt_str)
         now = get_now()

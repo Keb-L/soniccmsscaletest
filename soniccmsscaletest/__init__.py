@@ -8,7 +8,7 @@ subprocess_logger = setup_logger(
     logging.Formatter(fmt='[subprocess]: %(message)s')
     )
 
-SCRAM_ARCH='slc6_amd64_gcc700'
+SCRAM_ARCH='slc7_amd64_gcc700'
 DATE_FMT_STR='%Y-%m-%d %H:%M:%S'
 
 from . import utils

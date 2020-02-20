@@ -83,7 +83,7 @@ class Inferencer(object):
             'scram b ExternalLinks',
             'cmsenv',
             'export SCRAM_ARCH={0}'.format(self.arch),
-            'cd SonicCMS/TensorRT/python',
+            'cd SonicCMS/TensorRT/python','ls -ltrh',
             [
                 'cmsRun HLT_OnLine_GRun.py',
                 'maxEvents={0}'.format(n_events),

@@ -78,11 +78,11 @@ class Inferencer(object):
         cmds = [
             'shopt -s expand_aliases','uname -r',
             'source /cvmfs/cms.cern.ch/cmsset_default.sh',
-            'export SCRAM_ARCH={0}'.format(self.arch),
             'cd {0}/src'.format(self.cmssw_path),
             'scram b ProjectRename',
             'scram b ExternalLinks',
             'cmsenv',
+            'export SCRAM_ARCH={0}'.format(self.arch),
             'cd SonicCMS/TensorRT/python',
             [
                 'cmsRun HLT_OnLine_GRun.py',

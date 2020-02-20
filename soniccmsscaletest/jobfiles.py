@@ -100,7 +100,7 @@ class JDLFile(JDLBase):
         self.options['log']    = 'sonic_$(Cluster)_$(Process).log'
         self.options['+REQUIRED_OS'] = '"rhel7"'# '(Machine == "t3desk014.mit.edu")'
         self.options['X509_USER_PROXY'] = '/home/jeffkrupa/x509_up'
-        self.options['x509userproxy'] = '/home/jeffkrupa/x509_up'
+        self.options['x509userproxy'] = '/tmp/x509_up'
         #self.options['requirements'] = '(Machine == "t3desk014.mit.edu")'
         # Make sure of time at which to run
         if self.runtime:

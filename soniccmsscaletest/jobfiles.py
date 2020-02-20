@@ -100,7 +100,7 @@ class JDLFile(JDLBase):
         self.options['log']    = 'sonic_$(Cluster)_$(Process).log'
         self.options['+REQUIRED_OS'] = '"rhel7"'
         self.options['x509userproxy'] = '/uscms/home/jkrupa/nobackup/x509up_jk'
-        self.options['RequestMemory'] = '4000'#'/uscms/home/jkrupa/nobackup/x509up_jk'
+        self.options['RequestMemory'] = '6000'#'/uscms/home/jkrupa/nobackup/x509up_jk'
         # Make sure of time at which to run
         if self.runtime:
             datetime.datetime.strptime(self.runtime, '%Y-%m-%d %H:%M:%S')  # Make sure str has right format

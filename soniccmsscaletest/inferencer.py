@@ -48,7 +48,7 @@ class Inferencer(object):
             #if apply_lpcwn_offset:
             #    logger.warning('Applying WN offset of 6 hours!')
             #    now -= datetime.timedelta(hours=6)
-            #return now
+            return now
 
         run_time = datetime.datetime.strptime(time, self.date_fmt_str)
         now = get_now()

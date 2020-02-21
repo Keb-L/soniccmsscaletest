@@ -34,6 +34,7 @@ class Inferencer(object):
         self.dry = dry
         soniccmsscaletest.utils.check_is_cmssw_path(self.cmssw_path)
 
+
     def run_at_time(self, time, late_tolerance_min=5, n_events=None, apply_lpcwn_offset=True):
         """
         :param time: Date string with format self.date_fmt_str. time should be in the 
@@ -42,6 +43,8 @@ class Inferencer(object):
         :param late_tolerance_min: Amount of minutes the job can be late and still start
         :type late_tolerance_min: str
         """
+
+        prepare()
 
         def get_now():
             now = datetime.datetime.now()
@@ -73,8 +76,7 @@ class Inferencer(object):
         logger.info('Starting run at {0}'.format(get_now().strftime(self.date_fmt_str)))
         self.run(n_events)
 
-    def run(self, n_events=None):
-        n_events = self.n_events if n_events is None else n_events
+    def prepare(self):
         cmds = [
             'shopt -s expand_aliases','uname -r',
             'source /cvmfs/cms.cern.ch/cmsset_default.sh',
@@ -84,7 +86,13 @@ class Inferencer(object):
             'cmsenv',
             'export SCRAM_ARCH={0}'.format(self.arch),
             'cd SonicCMS/TensorRT/python',
-            'xrdcp root://eoscms.cern.ch//store/data/Run2018A/HLTPhysics/RAW/v1/000/316/944/00000/E266D611-7E61-E811-B73D-FA163E84650C.root .',
+            'xrdcp root://eoscms.cern.ch//store/data/Run2018A/HLTPhysics/RAW/v1/000/316/944/00000/E266D611-7E61-E811-B73D-FA163E84650C.root .'
+        ]
+        soniccmsscaletest.utils.run_multiple_commands(cmds)
+         
+    def run(self, n_events=None):
+        n_events = self.n_events if n_events is None else n_events
+        cmds = [
             [
                 'cmsRun OnLine_HLT_GRun.py'
                 #'maxEvents={0}'.format(n_events),

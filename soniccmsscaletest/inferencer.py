@@ -44,7 +44,7 @@ class Inferencer(object):
         :type late_tolerance_min: str
         """
 
-        prepare()
+        self.prepare()
 
         def get_now():
             now = datetime.datetime.now()

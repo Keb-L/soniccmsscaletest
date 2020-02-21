@@ -93,6 +93,14 @@ class Inferencer(object):
     def run(self, n_events=None):
         n_events = self.n_events if n_events is None else n_events
         cmds = [
+            'shopt -s expand_aliases','uname -r',
+            'source /cvmfs/cms.cern.ch/cmsset_default.sh',
+            'cd {0}/src'.format(self.cmssw_path),
+            'scram b ProjectRename',
+            'scram b ExternalLinks',
+            'cmsenv',
+            'export SCRAM_ARCH={0}'.format(self.arch),
+            'cd SonicCMS/TensorRT/python',
             [
                 'cmsRun OnLine_HLT_GRun.py'
                 #'maxEvents={0}'.format(n_events),

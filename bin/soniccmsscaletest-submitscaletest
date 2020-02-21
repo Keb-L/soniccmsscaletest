@@ -19,7 +19,7 @@ args = parser.parse_args()
 
 def main():
     now = datetime.datetime.now()
-    rundir = 'scaletest_{0}'.format(now.strftime('%Y%m%d_%H%M%S'))
+    rundir = 'scaletest_{0}_{1}'.format(now.strftime('%Y%m%d_%H%M%S'),args.njobs)
     soniccmsscaletest.utils.create_directory(rundir, must_not_exist=True, dry=args.dry)
     cmssw_tarball = osp.abspath(args.tarball)
 

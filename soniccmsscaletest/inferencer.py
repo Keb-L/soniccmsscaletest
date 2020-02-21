@@ -77,7 +77,6 @@ class Inferencer(object):
         n_events = self.n_events if n_events is None else n_events
         cmds = [
             'shopt -s expand_aliases','uname -r',
-            'xrdcp root://eoscms.cern.ch//store/data/Run2018A/HLTPhysics/RAW/v1/000/316/944/00000/E266D611-7E61-E811-B73D-FA163E84650C.root SonicCMS/TensorRT/python',
             'source /cvmfs/cms.cern.ch/cmsset_default.sh',
             'cd {0}/src'.format(self.cmssw_path),
             'scram b ProjectRename',
@@ -85,6 +84,7 @@ class Inferencer(object):
             'cmsenv',
             'export SCRAM_ARCH={0}'.format(self.arch),
             'cd SonicCMS/TensorRT/python',
+            'xrdcp root://eoscms.cern.ch//store/data/Run2018A/HLTPhysics/RAW/v1/000/316/944/00000/E266D611-7E61-E811-B73D-FA163E84650C.root .',
             [
                 'cmsRun OnLine_HLT_GRun.py'
                 #'maxEvents={0}'.format(n_events),

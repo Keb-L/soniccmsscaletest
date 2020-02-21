@@ -14,13 +14,14 @@ parser.add_argument('-p', '--port', default=50051, type=int, help='Port of the A
 parser.add_argument('-n', '--nevents', required=True, type=int, help='Number of events to inference')
 parser.add_argument('--njobs', type=int, required=True, help='Number of jobs to submit')
 parser.add_argument('-d', '--datafile', required=True, type=str, help='.root file containing events')
+parser.add_argument('-name', '--name', required=True, type=str, help='Name of jobs')
 parser.add_argument('--dry', action='store_true', help='Shows logging output but does not run anything')
 args = parser.parse_args()
 
 def main():
     now = datetime.datetime.now()
-    rundir = 'scaletest_{0}_{1}'.format(now.strftime('%Y%m%d_%H%M%S'),args.njobs)
-    soniccmsscaletest.utils.create_directory(rundir, must_not_exist=True, dry=args.dry)
+    rundir = 'scaletest_{0}'.format(args.name)# now.strftime('%Y%m%d_%H%M%S'),args.njobs)
+    soniccmsscaletest.utils.create_directory(rundir, must_not_exist=False, dry=args.dry)
     cmssw_tarball = osp.abspath(args.tarball)
 
     with soniccmsscaletest.utils.switchdir(rundir, dry=args.dry):
@@ -50,6 +51,7 @@ def main():
             cmssw_tarball = cmssw_tarball,
             datafile = args.datafile,
             n_jobs = args.njobs,
+            name = args.name,
             runtime = runtime_str,
             soniccmsscaletest_tarball = 'soniccmsscaletest.tar'
             )

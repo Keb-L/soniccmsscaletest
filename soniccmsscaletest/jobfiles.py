@@ -74,7 +74,7 @@ class JDLFile(JDLBase):
 
     starting_seed = 1001
 
-    def __init__(self, sh_file, cmssw_tarball, datafile, n_jobs, runtime=None, soniccmsscaletest_tarball=None):
+    def __init__(self, sh_file, cmssw_tarball, datafile, n_jobs, name, runtime=None, soniccmsscaletest_tarball=None):
         super(JDLFile, self).__init__()
         self.sh_file = sh_file
         self.cmssw_tarball = cmssw_tarball
@@ -82,7 +82,7 @@ class JDLFile(JDLBase):
         self.n_jobs = n_jobs
         self.soniccmsscaletest_tarball = soniccmsscaletest_tarball
         self.runtime = runtime
-        
+        self.name = name 
     def subparse(self):
         self.options['executable'] = self.sh_file
         self.options['should_transfer_files'] = 'YES'  # May not be needed if staging out to SE!
@@ -95,9 +95,9 @@ class JDLFile(JDLBase):
         self.options['transfer_input_files'] = ','.join(self.options['transfer_input_files'])
         self.options['notification'] = 'Complete'
         self.options['notify_user'] = 'jeffkrupa@gmail.com'
-        self.options['output'] = 'sonic_$(Cluster)_$(Process)_%i.stdout'%self.n_jobs
-        self.options['error']  = 'sonic_$(Cluster)_$(Process)_%i.stderr'%self.n_jobs
-        self.options['log']    = 'sonic_$(Cluster)_$(Process)_%i.log'%self.n_jobs
+        self.options['output'] = 'sonic_%s_%i.stdout'%(self.name, self.n_jobs)
+        self.options['error']  = 'sonic_%s_%i.stderr'%(self.name, self.n_jobs) 
+        self.options['log']    = 'sonic_%s_%i.log'%(self.name, self.n_jobs)
         self.options['+REQUIRED_OS'] = '"rhel7"'
         self.options['x509userproxy'] = '/uscms/home/jkrupa/nobackup/x509up_jk'
         self.options['RequestMemory'] = '6000'#'/uscms/home/jkrupa/nobackup/x509up_jk'
@@ -120,7 +120,7 @@ class SHFile(File):
         datafile,
         runtime=None,
         soniccmsscaletest_tarball=None
-        ):
+        ): 
         super(SHFile, self).__init__()
         # Files will be basenames on the node
         self.cmssw_tarball = osp.basename(cmssw_tarball)

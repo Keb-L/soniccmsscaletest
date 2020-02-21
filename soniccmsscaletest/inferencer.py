@@ -86,7 +86,7 @@ class Inferencer(object):
             'cmsenv',
             'export SCRAM_ARCH={0}'.format(self.arch),
             'cd SonicCMS/TensorRT/python',
-            'xrdcp root://eoscms.cern.ch//store/data/Run2018A/HLTPhysics/RAW/v1/000/316/944/00000/E266D611-7E61-E811-B73D-FA163E84650C.root .'
+            'xrdcp root://eoscms.fnal.gov//store/user/jkrupa/E266D611-7E61-E811-B73D-FA163E84650C.root .' 
         ]
         soniccmsscaletest.utils.run_multiple_commands(cmds)
          

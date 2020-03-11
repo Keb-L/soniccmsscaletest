@@ -5,6 +5,7 @@ import os.path as osp
 from time import sleep
 import logging, datetime, os, glob
 logger = logging.getLogger('soniccmsscaletest')
+batchsize_ = 10
 
 class Inferencer(object):
     """
@@ -31,6 +32,7 @@ class Inferencer(object):
         self.datafile = osp.abspath(datafile)
         self.cmssw_path = osp.abspath(cmssw_path)
         self.arch = 'slc7_amd64_gcc700'
+        self.batchsize = batchsize_
         self.dry = dry
         soniccmsscaletest.utils.check_is_cmssw_path(self.cmssw_path)
 
@@ -78,33 +80,34 @@ class Inferencer(object):
 
     def prepare(self):
         cmds = [
-            'shopt -s expand_aliases','uname -r',
+            # 'shopt -s expand_aliases','uname -r',
             'source /cvmfs/cms.cern.ch/cmsset_default.sh',
+            'export SCRAM_ARCH={0}'.format(self.arch),
             'cd {0}/src'.format(self.cmssw_path),
             'scram b ProjectRename',
             'scram b ExternalLinks',
-            'cmsenv',
-            'export SCRAM_ARCH={0}'.format(self.arch),
+            'eval `scramv1 runtime -sh`',
+
             'cd SonicCMS/TensorRT/python',
-            'xrdcp root://cmsxrootd.fnal.gov//store/user/jkrupa/E266D611-7E61-E811-B73D-FA163E84650C.root .' 
         ]
         soniccmsscaletest.utils.run_multiple_commands(cmds)
          
     def run(self, n_events=None):
         n_events = self.n_events if n_events is None else n_events
         cmds = [
-            'shopt -s expand_aliases','uname -r',
+            # 'shopt -s expand_aliases','uname -r',
             'source /cvmfs/cms.cern.ch/cmsset_default.sh',
+            'export SCRAM_ARCH={0}'.format(self.arch),
             'cd {0}/src'.format(self.cmssw_path),
             'scram b ProjectRename',
+            'eval `scramv1 runtime -sh`',
             'scram b ExternalLinks',
-            'cmsenv',
-            'export SCRAM_ARCH={0}'.format(self.arch),
+
             'cd SonicCMS/TensorRT/python',
             [
-                'cmsRun OnLine_HLT_GRun.py'
-                #'maxEvents={0}'.format(n_events),
-                #'address={0}'.format(self.address),
+                'cmsRun DeepCaloTest_mc_cfg.py maxEvents={0} batchsize={1} address={2}'.format(n_events, self.batchsize, self.address)
+                # 'maxEvents={0}'.format(n_events),
+                # 'address={0}'.format(self.address),
                 #'port={0}'.format(self.port),
                 #'datafile={0}'.format(self.datafile)
                 ]

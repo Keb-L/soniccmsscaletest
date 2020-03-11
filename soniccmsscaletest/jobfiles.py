@@ -93,14 +93,14 @@ class JDLFile(JDLBase):
             logger.info('Added {0} to input files'.format(self.soniccmsscaletest_tarball))
             self.options['transfer_input_files'].append(self.soniccmsscaletest_tarball)
         self.options['transfer_input_files'] = ','.join(self.options['transfer_input_files'])
-        self.options['notification'] = 'Complete'
-        self.options['notify_user'] = 'jeffkrupa@gmail.com'
+        # self.options['notification'] = 'Complete'
+        # self.options['notify_user'] = ''
         self.options['output'] = 'sonic_$(Cluster)_$(Process)_%i.stdout'%self.n_jobs
         self.options['error']  = 'sonic_$(Cluster)_$(Process)_%i.stderr'%self.n_jobs
         self.options['log']    = 'sonic_$(Cluster)_$(Process)_%i.log'%self.n_jobs
-        self.options['+REQUIRED_OS'] = '"rhel7"'
-        self.options['x509userproxy'] = '/uscms/home/jkrupa/nobackup/x509up_jk'
-        self.options['RequestMemory'] = '6000'#'/uscms/home/jkrupa/nobackup/x509up_jk'
+        # self.options['+REQUIRED_OS'] = '"sl7"'
+        self.options['x509userproxy'] = '/uscms/home/kdlin/x509up_u56162'
+        # self.options['RequestMemory'] = '6000'#
         # Make sure of time at which to run
         if self.runtime:
             datetime.datetime.strptime(self.runtime, '%Y-%m-%d %H:%M:%S')  # Make sure str has right format
